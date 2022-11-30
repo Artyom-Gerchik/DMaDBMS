@@ -36,13 +36,10 @@
 	
 -- SELF JOIN --
 
--- SELECT
---     e.first_name first_name, m.last_name last_name
--- FROM
---     users e
--- JOIN users m ON m.fk_role_id = e.fk_role_id
--- ORDER BY
---     last_name;
+-- SELECT A.id AS id1, B.id AS id2, A.login
+-- FROM users A, users B
+-- WHERE A.fk_role_id <> B.fk_role_id 
+-- ORDER BY A.fk_role_id;
 
 -- SELF JOIN --
 

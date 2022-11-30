@@ -94,5 +94,7 @@ CREATE TABLE LogsTypes(
 
 CREATE TABLE Logs(
 	id uuid PRIMARY KEY,
-	log_type_id uuid REFERENCES LogsTypes(id) NOT NULL
+	log_type_id uuid REFERENCES LogsTypes(id) NOT NULL,
+	happened_at timestamp(6) NOT NULL, -- need to add to scheme
+	client_id uuid NOT NULL -- need to add to scheme
 );
