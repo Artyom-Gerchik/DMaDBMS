@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS Users, Roles, Clients, Administrators, Moderators, PrizeDrawsClients, PrizeDraws, Questions, Orders, Offers, Apartments, ApartmentsTypes, ApartmentsClasses, Logs, LogsTypes;
+-- DROP TABLE IF EXISTS Users, Roles, Clients, Administrators, Moderators, PrizeDrawsClients, PrizeDraws, Questions, Orders, Offers, Apartments, ApartmentsTypes, ApartmentsClasses, Logs, LogsTypes;
 
 CREATE TABLE Roles(
 	id uuid PRIMARY KEY,

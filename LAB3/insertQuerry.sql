@@ -135,3 +135,32 @@
 -- 						   100000,
 -- 						   '2010-01-01',
 -- 						   '2010-01-11');
+
+-- SELECT * FROM Users LIMIT 2 OFFSET 3
+-- SELECT login FROM Users WHERE password='password5'
+-- SELECT * FROM LogsTypes
+-- SELECT * FROM Clients
+
+-- INSERT INTO Users VALUES (gen_random_uuid(),
+-- 						  'login6',
+-- 						  'password6',
+-- 						  'first_name6',
+-- 						  'last_name6',
+-- 						  (SELECT id FROM Roles WHERE role_name = 'client'));
+
+-- INSERT INTO Clients VALUES ((SELECT id FROM Users WHERE login = 'login6'),
+-- 							'bsuir',
+-- 							'2005-05-05'
+-- 						   );
+-- UPDATE Clients SET patronymic = 'Patronymic1' WHERE date_of_birth ='2001-01-01'
+
+-- SELECT * FROM Clients WHERE patronymic LIKE '_atronymic_' ORDER BY date_of_birth DESC   -- OFFSET 1
+-- SELECT * FROM Clients WHERE patronymic ILIKE 'patronymic_' ORDER BY date_of_birth DESC
+-- SELECT DISTINCT log_type_id FROM Logs
+
+-- SELECT * FROM LogsTypes
+-- DELETE FROM LogsTypes
+
+-- UPDATE LogsTypes SET log_type_name = 'log_type' WHERE log_type_name ILIKE 'log_type_'
+
+--UPDATE LogsTypes SET log_type_name = 'log_type1'
