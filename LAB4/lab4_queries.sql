@@ -110,3 +110,19 @@ FROM orders;
 EXPLAIN SELECT * FROM orders;
 
 -----------------------------------------------------------------------------------------------
+
+
+
+
+SELECT clients.patronymic AS patronymic,
+		orders.id AS order_id,
+		offers.cost_for_day AS cost_for_day,
+		apartments.count_rooms AS count_rooms,
+		apartmentstypes.apartments_type_name as type_name,
+		apartmentsclasses.apartments_class_name as class_name
+		FROM clients
+	LEFT JOIN orders ON orders.client_id = clients.id
+		LEFT JOIN offers ON offers.id = orders.offer_id
+			LEFT JOIN apartments ON offers.apartments_id = apartments.id
+				LEFT JOIN apartmentstypes ON apartments.apartments_type_id = apartmentstypes.id
+					LEFT JOIN apartmentsclasses ON apartments.apartments_class_id = apartmentsclasses.id
