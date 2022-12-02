@@ -364,3 +364,5 @@ FodyWeavers.xsd
 
 # This will generate when project builds
 .idea/
+
+.LAB6/LAB6/Entities/DB_Manager.cs

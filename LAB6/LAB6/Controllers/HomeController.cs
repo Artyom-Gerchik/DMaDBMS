@@ -29,6 +29,7 @@ public class HomeController : Controller
         params1.Value = "artyom";
         dbcommand.Parameters.Add(params1);
         
+        
 
         NpgsqlDataReader dataReader = dbcommand.ExecuteReader();
         

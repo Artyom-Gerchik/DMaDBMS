@@ -1,3 +1,4 @@
+using System.Data;
 using System.Diagnostics;
 using System.Security.Claims;
 using LAB6.Entities;
@@ -24,6 +25,21 @@ public class AccountController : Controller
         return View();
     }
 
+    [HttpPost]
+    public async Task<IActionResult> Register(RegisterModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            if (CheckForSignUp(model.Login))
+            {
+                await SignUpUser(model);
+                return RedirectToAction("Profile", "Client");
+            }
+        }
+
+        return View(model);
+    }
+
     [HttpGet]
     public IActionResult Login()
     {
@@ -33,12 +49,24 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(LoginModel model)
     {
+        var role = "";
         if (ModelState.IsValid)
         {
-            if (CheckForSignIn(model.Login, model.Password))
+            if (CheckForSignIn(model.Login, model.Password, out role))
             {
                 await SignInUser(model.Login);
-                return RedirectToAction("Index", "Home");
+                if (role == "client")
+                {
+                    return RedirectToAction("Profile", "Client");
+                }
+                else if (role == "admin")
+                {
+                    //return RedirectToAction("Profile", "Admin");
+                }
+                else if (role == "moderator")
+                {
+                    //return RedirectToAction("Profile", "Moderator");
+                }
             }
         }
 
@@ -53,9 +81,10 @@ public class AccountController : Controller
         return RedirectToAction("Index", "Home");
     }
 
-    private bool CheckForSignIn(string login, string password)
+    private bool CheckForSignIn(string login, string password, out string? role)
     {
-        dbcommand.CommandText = (@"SELECT * FROM users WHERE login = (@p1) AND password = (@p2)");
+        dbcommand.CommandText = (@"SELECT * FROM users
+	JOIN roles ON users.fk_role_id = roles.id AND login = (@p1) AND password = (@p2)");
 
         var params1 = dbcommand.CreateParameter();
         var params2 = dbcommand.CreateParameter();
@@ -73,10 +102,75 @@ public class AccountController : Controller
 
         if (dataReader.Read() == false)
         {
+            role = "";
             return false;
         }
 
+        role = dataReader.GetValue(dataReader.GetOrdinal("role_name")).ToString();
         return true;
+    }
+
+    private bool CheckForSignUp(string login)
+    {
+        dbcommand.CommandText = (@"SELECT * FROM users WHERE login = (@p1)");
+
+        var params1 = dbcommand.CreateParameter();
+
+        params1.ParameterName = "p1";
+        params1.Value = login;
+
+        dbcommand.Parameters.Add(params1);
+
+        NpgsqlDataReader dataReader = dbcommand.ExecuteReader();
+
+        if (dataReader.Read() == false)
+        {
+            dataReader.Close();
+            return true;
+        }
+
+        return false;
+    }
+
+    private async Task SignUpUser(RegisterModel model)
+    {
+        //dbcommand.CommandType = CommandType.StoredProcedure;
+        dbcommand.CommandText = (@"CALL registerClient((@p1), (@p2), (@p3), (@p4), (@p5), cast((@p6) as date))");
+        var params1 = dbcommand.CreateParameter();
+        var params2 = dbcommand.CreateParameter();
+        var params3 = dbcommand.CreateParameter();
+        var params4 = dbcommand.CreateParameter();
+        var params5 = dbcommand.CreateParameter();
+        var params6 = dbcommand.CreateParameter();
+
+        params1.ParameterName = "p1";
+        params1.Value = model.Login;
+
+        params2.ParameterName = "p2";
+        params2.Value = model.Password;
+
+        params3.ParameterName = "p3";
+        params3.Value = model.FirstName;
+
+        params4.ParameterName = "p4";
+        params4.Value = model.LastName;
+
+        params5.ParameterName = "p5";
+        params5.Value = model.Patronymic;
+
+        params6.ParameterName = "p6";
+        params6.Value = model.DateOfBirth;
+
+        dbcommand.Parameters.Add(params1);
+        dbcommand.Parameters.Add(params2);
+        dbcommand.Parameters.Add(params3);
+        dbcommand.Parameters.Add(params4);
+        dbcommand.Parameters.Add(params5);
+        dbcommand.Parameters.Add(params6);
+
+        dbcommand.ExecuteReader();
+
+        await SignInUser(model.Login);
     }
 
     private async Task SignInUser(string login)

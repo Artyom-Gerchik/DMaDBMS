@@ -17,7 +17,6 @@ public class ClientController : Controller
     public ClientProfileModel GetClient()
     {
         var model = new ClientProfileModel();
-        object id;
 
         dbcommand.CommandText =
             (@"SELECT users.id, users.login, users.password, users.first_name, users.last_name, clients.patronymic, clients.date_of_birth FROM users
@@ -35,7 +34,7 @@ public class ClientController : Controller
 
         while (dataReader.Read())
         {
-            id = dataReader.GetValue(dataReader.GetOrdinal("id"));
+            model.id = (Guid?)dataReader.GetValue(dataReader.GetOrdinal("id"));
             model.Login = dataReader.GetValue(dataReader.GetOrdinal("login")).ToString();
             model.Password = dataReader.GetValue(dataReader.GetOrdinal("password")).ToString();
             model.FirstName = dataReader.GetValue(dataReader.GetOrdinal("first_name")).ToString();
@@ -46,6 +45,52 @@ public class ClientController : Controller
         }
 
         return model;
+    }
+
+    [HttpGet]
+    public IActionResult UpdateClient()
+    {
+        var model = GetClient();
+        return View(model);
+    }
+
+    [HttpPost]
+    public void UpdateClient(ClientProfileModel model)
+    {
+        var client = GetClient();
+
+        dbcommand.CommandText =
+            (@"UPDATE users SET first_name = (@p1), last_name = (@p2) WHERE login = (@p3) AND id = (@p4);
+               UPDATE clients SET patronymic = (@p5) WHERE id = (@p4)");
+
+        var params1 = dbcommand.CreateParameter();
+        var params2 = dbcommand.CreateParameter();
+        var params3 = dbcommand.CreateParameter();
+        var params4 = dbcommand.CreateParameter();
+        var params5 = dbcommand.CreateParameter();
+
+        params1.ParameterName = "p1";
+        params1.Value = model.FirstName;
+
+        params2.ParameterName = "p2";
+        params2.Value = model.LastName;
+
+        params3.ParameterName = "p3";
+        params3.Value = model.Login;
+
+        params4.ParameterName = "p4";
+        params4.Value = model.id;
+
+        params5.ParameterName = "p5";
+        params5.Value = model.Patronymic;
+
+        dbcommand.Parameters.Add(params1);
+        dbcommand.Parameters.Add(params2);
+        dbcommand.Parameters.Add(params3);
+        dbcommand.Parameters.Add(params4);
+        dbcommand.Parameters.Add(params5);
+
+        dbcommand.ExecuteReader();
     }
 
     [HttpGet]

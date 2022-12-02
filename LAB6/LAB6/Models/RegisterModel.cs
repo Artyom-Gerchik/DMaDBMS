@@ -4,20 +4,17 @@ namespace LAB6.Models;
 
 public class RegisterModel : IValidatableObject
 {
-    [Required]
-    [Display(Name = "Email")]
-    [RegularExpression(".+@.+\\..+", ErrorMessage = "Please Enter Correct Email Address")]
-    public string Email { get; set; }
+    [Required] public string Login { get; set; }
 
     [Required]
     [DataType(DataType.Text)]
-    [Display(Name = "Name")]
-    public string Name { get; set; }
+    [Display(Name = "FirstName")]
+    public string FirstName { get; set; }
 
     [Required]
     [DataType(DataType.Text)]
-    [Display(Name = "Surname")]
-    public string Surname { get; set; }
+    [Display(Name = "LastName")]
+    public string LastName { get; set; }
 
     [Required]
     [DataType(DataType.Text)]
@@ -35,13 +32,18 @@ public class RegisterModel : IValidatableObject
     [Compare("Password", ErrorMessage = "Passwords doesn't match")]
     public string ConfirmPassword { get; set; }
 
+    [Required]
+    [DataType(DataType.Date)]
+    [Display(Name = "Date Of Birth")]
+    public string DateOfBirth { get; set; }
+
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         var errors = new List<ValidationResult>();
 
-        if (Name.Any(x => char.IsDigit(x))) errors.Add(new ValidationResult("Name can't contain digits"));
+        if (FirstName.Any(x => char.IsDigit(x))) errors.Add(new ValidationResult("Name can't contain digits"));
 
-        if (Surname.Any(x => char.IsDigit(x))) errors.Add(new ValidationResult("Surname can't contain digits"));
+        if (LastName.Any(x => char.IsDigit(x))) errors.Add(new ValidationResult("Surname can't contain digits"));
 
         if (Patronymic.Any(x => char.IsDigit(x))) errors.Add(new ValidationResult("Patronymic can't contain digits"));
 
