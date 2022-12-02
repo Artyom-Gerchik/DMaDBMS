@@ -4,9 +4,9 @@ namespace LAB6.Models;
 
 public class LoginModel
 {
-    [Required(ErrorMessage = "Email?")]
-    [EmailAddress]
-    public string Email { get; set; }
+    [Required(ErrorMessage = "Login?")]
+    
+    public string Login { get; set; }
 
     [Required(ErrorMessage = "Password?")]
     [DataType(DataType.Password)]

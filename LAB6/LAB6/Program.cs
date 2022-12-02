@@ -1,7 +1,20 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        // Specify where to redirect un-authenticated users
+        options.LoginPath = "/Login";
+
+        // Specify the name of the auth cookie.
+        // ASP.NET picks a dumb name by default.
+        options.Cookie.Name = "my_app_auth_cookie";
+    });
 
 var app = builder.Build();
 
@@ -18,6 +31,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
