@@ -20,7 +20,7 @@ public class ClientController : Controller
 
         dbcommand.CommandText =
             (@"SELECT users.id, users.login, users.password, users.first_name, users.last_name, clients.patronymic, clients.date_of_birth FROM users
-	JOIN clients ON users.first_name = (@p1) AND users.id = clients.id;");
+	JOIN clients ON users.login = (@p1) AND users.id = clients.id;");
 
         var params1 = dbcommand.CreateParameter();
 
@@ -43,6 +43,8 @@ public class ClientController : Controller
             model.DateOfBirth =
                 DateOnly.FromDateTime((DateTime)dataReader.GetValue(dataReader.GetOrdinal("date_of_birth")));
         }
+        
+        dataReader.Close();
 
         return model;
     }
@@ -55,7 +57,7 @@ public class ClientController : Controller
     }
 
     [HttpPost]
-    public void UpdateClient(ClientProfileModel model)
+    public async Task<IActionResult> UpdateClient(ClientProfileModel model)
     {
         var client = GetClient();
 
@@ -76,10 +78,10 @@ public class ClientController : Controller
         params2.Value = model.LastName;
 
         params3.ParameterName = "p3";
-        params3.Value = model.Login;
+        params3.Value = client.Login;
 
         params4.ParameterName = "p4";
-        params4.Value = model.id;
+        params4.Value = client.id;
 
         params5.ParameterName = "p5";
         params5.Value = model.Patronymic;
@@ -90,7 +92,9 @@ public class ClientController : Controller
         dbcommand.Parameters.Add(params4);
         dbcommand.Parameters.Add(params5);
 
-        dbcommand.ExecuteReader();
+        NpgsqlDataReader dataReader = dbcommand.ExecuteReader();
+        dataReader.Close();
+        return RedirectToAction("Profile", "Client");
     }
 
     [HttpGet]
