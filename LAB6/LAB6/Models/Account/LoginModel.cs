@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LAB6.Models;
 
-public class LoginModel
+public class LoginModel 
 {
     [Required(ErrorMessage = "Login?")]
     public string Login { get; set; }

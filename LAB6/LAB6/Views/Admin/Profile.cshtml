@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Profile";
+}
+
+@model LAB6.Models.Admin.AdminProfileModel
+
+<form asp-action="Profile" asp-controller="Admin" asp-anti-forgery="true">
+
+    <div style="display: flex; flex-direction: row">
+        <h3>Hello @Model?.Login</h3>
+    </div>
+    <div style="margin-top: 10px">
+        <input type="submit" value="Add Moderator"/>
+    </div>
+    <div style="margin-top: 10px">
+        <input type="submit" value="Clients"/>
+    </div>
+
+</form>
+
+<form asp-action="AddOffer" asp-controller="Admin" asp-anti-forgery="true" method="get">
+    <div style="margin-top: 10px">
+        <input type="submit" value="Add Offer"/>
+    </div>
+</form>
+
+<form asp-action="OffersList" asp-controller="Admin" asp-anti-forgery="true" method="get">
+    <div style="margin-top: 10px">
+        <input type="submit" value="Offers"/>
+    </div>
+</form>
+
+<form asp-action="Logs" asp-controller="Admin" asp-anti-forgery="true" method="get">
+    <div style="margin-top: 10px">
+        <input type="submit" value="Logs"/>
+    </div>
+</form>

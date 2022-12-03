@@ -29,13 +29,11 @@ public class AccountController : Controller
     public async Task<IActionResult> Register(RegisterModel model)
     {
         if (ModelState.IsValid)
-        {
             if (CheckForSignUp(model.Login))
             {
                 await SignUpUser(model);
                 return RedirectToAction("Profile", "Client");
             }
-        }
 
         return View(model);
     }
@@ -61,7 +59,7 @@ public class AccountController : Controller
                 }
                 else if (role == "admin")
                 {
-                    //return RedirectToAction("Profile", "Admin");
+                    return RedirectToAction("Profile", "Admin");
                 }
                 else if (role == "moderator")
                 {
@@ -83,8 +81,8 @@ public class AccountController : Controller
 
     private bool CheckForSignIn(string login, string password, out string? role)
     {
-        dbcommand.CommandText = (@"SELECT * FROM users
-	JOIN roles ON users.fk_role_id = roles.id AND login = (@p1) AND password = (@p2)");
+        dbcommand.CommandText = @"SELECT * FROM users
+	JOIN roles ON users.fk_role_id = roles.id AND login = (@p1) AND password = (@p2)";
 
         var params1 = dbcommand.CreateParameter();
         var params2 = dbcommand.CreateParameter();
@@ -98,21 +96,23 @@ public class AccountController : Controller
         dbcommand.Parameters.Add(params1);
         dbcommand.Parameters.Add(params2);
 
-        NpgsqlDataReader dataReader = dbcommand.ExecuteReader();
+        var dataReader = dbcommand.ExecuteReader();
 
         if (dataReader.Read() == false)
         {
             role = "";
+            dbcommand.Parameters.Clear();
             return false;
         }
 
         role = dataReader.GetValue(dataReader.GetOrdinal("role_name")).ToString();
+        dbcommand.Parameters.Clear();
         return true;
     }
 
     private bool CheckForSignUp(string login)
     {
-        dbcommand.CommandText = (@"SELECT * FROM users WHERE login = (@p1)");
+        dbcommand.CommandText = @"SELECT * FROM users WHERE login = (@p1)";
 
         var params1 = dbcommand.CreateParameter();
 
@@ -121,11 +121,12 @@ public class AccountController : Controller
 
         dbcommand.Parameters.Add(params1);
 
-        NpgsqlDataReader dataReader = dbcommand.ExecuteReader();
+        var dataReader = dbcommand.ExecuteReader();
 
         if (dataReader.Read() == false)
         {
             dataReader.Close();
+            dbcommand.Parameters.Clear();
             return true;
         }
 
@@ -135,7 +136,7 @@ public class AccountController : Controller
     private async Task SignUpUser(RegisterModel model)
     {
         //dbcommand.CommandType = CommandType.StoredProcedure;
-        dbcommand.CommandText = (@"CALL registerClient((@p1), (@p2), (@p3), (@p4), (@p5), cast((@p6) as date))");
+        dbcommand.CommandText = @"CALL registerClient((@p1), (@p2), (@p3), (@p4), (@p5), cast((@p6) as date))";
         var params1 = dbcommand.CreateParameter();
         var params2 = dbcommand.CreateParameter();
         var params3 = dbcommand.CreateParameter();
@@ -169,6 +170,7 @@ public class AccountController : Controller
         dbcommand.Parameters.Add(params6);
 
         dbcommand.ExecuteReader();
+        dbcommand.Parameters.Clear();
 
         await SignInUser(model.Login);
     }
@@ -177,7 +179,7 @@ public class AccountController : Controller
     {
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, login),
+            new(ClaimTypes.Name, login)
         };
 
         var claimsIdentity = new ClaimsIdentity(

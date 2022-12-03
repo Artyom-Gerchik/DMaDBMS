@@ -1,0 +1,45 @@
+@model LAB6.Models.Admin.AddOfferModel
+
+<h2>Edit Offer</h2>
+
+<form asp-action="EditOffer" asp-controller="Admin" asp-anti-forgery="true" method="post">
+    <div class="validation" asp-validation-summary="All"></div>
+    <div>
+        <div>
+            <label asp-for="idForEdit">ID</label><br/>
+            <input type="text" asp-for="idForEdit" readonly/>
+            <span asp-validation-for="idForEdit"></span>
+        </div>
+        <div>
+            <label asp-for="CostForDay">Cost For Day</label><br/>
+            <input type="text" asp-for="CostForDay"/>
+            <span asp-validation-for="CostForDay"></span>
+        </div>
+        <div style="margin-top: 10px">
+            <label asp-for="Days">Days</label><br/>
+            <input type="text" asp-for="Days"/>
+            <span asp-validation-for="Days"></span>
+        </div>
+        <div style="margin-top: 10px">
+            <label asp-for="Country">Country</label><br/>
+            <input type="text" asp-for="Country"/>
+            <span asp-validation-for="Country"></span>
+        </div>
+        <div style="margin-top: 10px">
+            <label asp-for="Address">Address</label><br/>
+            <input type="text" asp-for="Address"/>
+            <span asp-validation-for="Address"></span>
+        </div>
+        <select class="custom-select" id="inputGroupSelect01" style="margin-top: 10px" asp-for="@Model!.idOfSelectedApp">
+            <option selected>app</option>
+            @foreach (var app in Model.Apartments!)
+            {
+                <option value="@app.id">@app.AppTypeName / @app.AppClassName / @app.CountRooms.ToString() / @app.CountFloors.ToString() / @app.CountSleepingPlaces.ToString()</option>
+            }
+        </select>
+        <div style="margin-top: 10px">
+            <input type="submit" value="Add Offer!"/>
+        </div>
+
+    </div>
+</form>
