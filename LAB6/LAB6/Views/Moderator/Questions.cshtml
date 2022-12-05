@@ -1,0 +1,23 @@
+@model LAB6.Models.Moderator.QuestionsListModel
+
+@foreach (var question in Model.QuestionModels)
+{
+    <hr>
+    <table class="table table-hover table-dark">
+        <tbody>
+        <tr>
+            <th scope="row">Question</th>
+            <td>
+                <textarea> @question.Question </textarea>
+            </td>
+            <td>
+                <form asp-action="Answer" asp-controller="Moderator" asp-anti-forgery="true" method="get">
+                    <input type="hidden" value="@question.Id" name="id" class="btn-primary btn-sm"/>
+                    <input type="submit" value="Answer" style="margin-top: 10px">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <hr>
+}

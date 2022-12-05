@@ -19,7 +19,7 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        return View();
+        return View(new AdminController().GetAllOffers());
     }
 
     [HttpGet]

@@ -9,12 +9,6 @@
     <div style="display: flex; flex-direction: row">
         <h3>Hello @Model?.Login</h3>
     </div>
-    <div style="margin-top: 10px">
-        <input type="submit" value="Add Moderator"/>
-    </div>
-    <div style="margin-top: 10px">
-        <input type="submit" value="Clients"/>
-    </div>
 
 </form>
 
@@ -33,5 +27,17 @@
 <form asp-action="Logs" asp-controller="Admin" asp-anti-forgery="true" method="get">
     <div style="margin-top: 10px">
         <input type="submit" value="Logs"/>
+    </div>
+</form>
+
+<form asp-action="AddModer" asp-controller="Admin" asp-anti-forgery="true" method="get">
+    <div style="margin-top: 10px">
+        <input type="submit" value="Add Moder"/>
+    </div>
+</form>
+
+<form asp-action="Clients" asp-controller="Admin" asp-anti-forgery="true" method="get">
+    <div style="margin-top: 10px">
+        <input type="submit" value="Clients"/>
     </div>
 </form>

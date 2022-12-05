@@ -124,7 +124,7 @@ public class AdminController : Controller
         return View(model);
     }
 
-    private OffersListModel GetAllOffers()
+    public OffersListModel GetAllOffers()
     {
         var model = new OffersListModel();
         model.Offers = new List<OfferView?>();
@@ -305,6 +305,67 @@ public class AdminController : Controller
         }
 
         dataReader.Close();
+
+        return View(model);
+    }
+
+    [HttpGet]
+    public IActionResult AddModer()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddModer(AddModerModel model)
+    {
+        dbcommand.CommandText = @"CALL registerModer((@p1), (@p2), (@p3), (@p4))";
+
+        var params1 = dbcommand.CreateParameter();
+        var params2 = dbcommand.CreateParameter();
+        var params3 = dbcommand.CreateParameter();
+        var params4 = dbcommand.CreateParameter();
+
+        params1.ParameterName = "p1";
+        params1.Value = model.Login;
+
+        params2.ParameterName = "p2";
+        params2.Value = model.Password;
+
+        params3.ParameterName = "p3";
+        params3.Value = model.Login;
+
+        params4.ParameterName = "p4";
+        params4.Value = model.Login;
+
+        dbcommand.Parameters.Add(params1);
+        dbcommand.Parameters.Add(params2);
+        dbcommand.Parameters.Add(params3);
+        dbcommand.Parameters.Add(params4);
+
+        dbcommand.ExecuteReader();
+        dbcommand.Parameters.Clear();
+
+
+        return RedirectToAction("Profile", "Admin");
+    }
+
+    [HttpGet]
+    public IActionResult Clients()
+    {
+        var model = new ClientsModel();
+        model.Clients = new List<Client>();
+
+        dbcommand.CommandText =
+            @"select users.id, users.first_name, users.last_name from users where fk_role_id = (select id from roles where role_name = 'client')";
+        var dataReader = dbcommand.ExecuteReader();
+        while (dataReader.Read())
+        {
+            var tmp = new Client();
+            tmp.id = (Guid)dataReader.GetValue(0);
+            tmp.FirstName = dataReader.GetValue(1) as string;
+            tmp.LastName = dataReader.GetValue(2) as string;
+            model.Clients.Add(tmp);
+        }
 
         return View(model);
     }

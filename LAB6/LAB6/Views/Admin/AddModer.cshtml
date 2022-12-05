@@ -1,0 +1,20 @@
+@model LAB6.Models.Admin.AddModerModel
+
+<form asp-action="AddModer" asp-controller="Admin" asp-anti-forgery="true" method="post">
+    <div class="validation" asp-validation-summary="All"></div>
+    <div>
+        <div>
+            <label asp-for="Login">Login</label><br/>
+            <input type="text" asp-for="Login"/>
+            <span asp-validation-for="Login"></span>
+        </div>
+        <div style="margin-top: 10px">
+            <label asp-for="Password">Password</label><br/>
+            <input type="text" asp-for="Password"/>
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div style="margin-top: 10px">
+            <input type="submit" value="Add Offer!"/>
+        </div>
+    </div>
+</form>

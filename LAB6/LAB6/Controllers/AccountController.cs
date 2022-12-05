@@ -63,7 +63,7 @@ public class AccountController : Controller
                 }
                 else if (role == "moderator")
                 {
-                    //return RedirectToAction("Profile", "Moderator");
+                    return RedirectToAction("Profile", "Moderator");
                 }
             }
         }
@@ -77,6 +77,36 @@ public class AccountController : Controller
         await HttpContext.SignOutAsync();
         HttpContext.Response.Cookies.Delete(".AspNetCore.Cookies");
         return RedirectToAction("Index", "Home");
+    }
+
+    public string CheckRole(string login)
+    {
+        var role = "";
+
+        dbcommand.CommandText = @"SELECT * FROM users
+	JOIN roles ON users.fk_role_id = roles.id AND login = (@p1)";
+
+        var params1 = dbcommand.CreateParameter();
+
+        params1.ParameterName = "p1";
+        params1.Value = login;
+
+        dbcommand.Parameters.Add(params1);
+
+        var dataReader = dbcommand.ExecuteReader();
+
+        if (dataReader.Read() == false)
+        {
+            role = "";
+            dbcommand.Parameters.Clear();
+            return role;
+        }
+
+        role = dataReader.GetValue(dataReader.GetOrdinal("role_name")).ToString();
+        dbcommand.Parameters.Clear();
+
+
+        return role;
     }
 
     private bool CheckForSignIn(string login, string password, out string? role)

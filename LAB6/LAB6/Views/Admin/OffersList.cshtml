@@ -47,15 +47,18 @@
         </tbody>
     </table>
 
-    <form method="POST" action="@Url.Action("DeleteOffer", "Admin")">
-        <input type="hidden" value="@offer.id" name="id" class="btn-primary btn-sm"/>
-        <button type="submit">Delete</button>
-    </form>
+    @if (User.Identity.Name == "ADMIN")
+    {
+        <form method="POST" action="@Url.Action("DeleteOffer", "Admin")">
+            <input type="hidden" value="@offer.id" name="id" class="btn-primary btn-sm"/>
+            <button type="submit">Delete</button>
+        </form>
 
-    <form method="GET" action="@Url.Action("EditOffer", "Admin")" style="margin-top: 10px">
-        <input type="hidden" value="@offer.id" name="id" class="btn-primary btn-sm"/>
-        <button type="submit">Edit</button>
-    </form>
+        <form method="GET" action="@Url.Action("EditOffer", "Admin")" style="margin-top: 10px">
+            <input type="hidden" value="@offer.id" name="id" class="btn-primary btn-sm"/>
+            <button type="submit">Edit</button>
+        </form>
+    }
 
     <hr>
 }

@@ -79,3 +79,29 @@ END;$$
 
 -- SELECT logs.id, logs.client_id , logs.happened_at, logstypes.log_type_name FROM logs
 -- JOIN logstypes ON logs.log_type_id = logstypes.id;
+
+CREATE OR REPLACE PROCEDURE registerModer(
+	login varchar(100),
+	password varchar(100),
+	first_name varchar(100),
+	last_name varchar(100)
+)
+LANGUAGE PLPGSQL    
+AS $$
+
+DECLARE var uuid;
+
+BEGIN
+	SELECT gen_random_uuid() INTO var;
+    
+	INSERT INTO Users VALUES (var,
+							  login,
+							  password,
+							  first_name,
+							  last_name,
+						      (SELECT id FROM Roles WHERE role_name = 'moderator'));
+
+	INSERT INTO Moderators VALUES (var);
+
+    COMMIT;
+END;$$

@@ -32,5 +32,9 @@
 </form>
 
 <form asp-action="UpdateClient" asp-controller="Client" asp-route-model="@Model" asp-anti-forgery="true" method="get">
-    <input type="submit" value="Settings" class="btn"/>
+    <input type="submit" value="Settings" style="margin-top: 10px">
+</form>
+
+<form asp-action="OrdersList" asp-controller="Client" asp-anti-forgery="true" method="get">
+    <input type="submit" value="Orders" style="margin-top: 10px">
 </form>

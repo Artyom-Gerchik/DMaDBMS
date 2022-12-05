@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using LAB6.Controllers
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -20,6 +21,17 @@
                 <ul class="navbar-nav ">
                     @if (User.Identity.IsAuthenticated)
                     {
+                        @if (new AccountController().CheckRole(User.Identity.Name) == "client")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="AskQuestion">Ask Question</a>
+                            </li>
+                        }else if (new AccountController().CheckRole(User.Identity.Name) == "moderator")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Moderator" asp-action="Questions">Answer Question</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Profile">Profile</a>
                         </li>

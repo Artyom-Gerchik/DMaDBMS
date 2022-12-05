@@ -1,0 +1,15 @@
+@model QuestionModel
+
+<h1> Answer Question </h1>
+
+
+<form asp-action="Answer" asp-controller="Moderator" asp-anti-forgery="true" method="post">
+    <textarea rows="10" cols="20" name="question" asp-for="Question" readonly>
+            </textarea>
+    <br>
+    <textarea rows="10" cols="20" name="answer" asp-for="Answer">
+        </textarea>
+    <br>
+    <input type="submit" value="Submit" style="margin-top: 10px">
+    <input type="hidden" value="@Model.Id" name="id" class="btn-primary btn-sm"/>
+</form>

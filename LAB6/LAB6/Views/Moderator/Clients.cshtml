@@ -1,0 +1,20 @@
+@model LAB6.Models.Admin.ClientsModel
+
+
+@foreach (var client in Model.Clients)
+{
+    <hr>
+    <table class="table table-hover table-dark">
+        <tbody>
+        <tr>
+            <th scope="row">First Name</th>
+            <td>@client.FirstName</td>
+        </tr>
+        <tr>
+            <th scope="row">Last Name</th>
+            <td>@client.LastName</td>
+        </tr>
+        </tbody>
+    </table>
+    <hr>
+}

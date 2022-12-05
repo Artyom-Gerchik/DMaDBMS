@@ -1,0 +1,15 @@
+@model LAB6.Models.Moderator.ModeratorProfileModel
+
+<form asp-action="Profile" asp-controller="Moderator" asp-anti-forgery="true">
+
+    <div style="display: flex; flex-direction: row">
+        <h3>Hello @Model?.Login</h3>
+    </div>
+
+</form>
+
+<form asp-action="Clients" asp-controller="Moderator" asp-anti-forgery="true" method="get">
+    <div style="margin-top: 10px">
+        <input type="submit" value="Clients"/>
+    </div>
+</form>

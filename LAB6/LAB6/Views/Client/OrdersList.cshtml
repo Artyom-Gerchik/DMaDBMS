@@ -1,0 +1,70 @@
+@model OrderListModel
+
+@foreach (var order in Model.Orders)
+{
+    <form asp-action="OrdersList" asp-controller="Client" asp-anti-forgery="true" method="post">
+
+        <hr>
+        <table class="table table-hover table-dark">
+            <tbody>
+            <tr>
+                <th scope="row">Cost For Day</th>
+                <td>@order.Offer.CostForDay.ToString()</td>
+            </tr>
+            <tr>
+                <th scope="row">Days</th>
+                <td>@order.Offer.Days.ToString()</td>
+            </tr>
+            <tr>
+                <th scope="row">Country</th>
+                <td>@order.Offer.Country</td>
+            </tr>
+            <tr>
+                <th scope="row">Address</th>
+                <td>@order.Offer.Address</td>
+            </tr>
+            <tr>
+                <th scope="row">App Type</th>
+                <td>@order.Offer.AppTypeName</td>
+            </tr>
+            <tr>
+                <th scope="row">App Class</th>
+                <td>@order.Offer.AppClassName</td>
+            </tr>
+            <tr>
+                <th scope="row">Count Rooms</th>
+                <td>@order.Offer.CountRooms.ToString()</td>
+            </tr>
+            <tr>
+                <th scope="row">Count Floors</th>
+                <td>@order.Offer.CountFloors.ToString()</td>
+            </tr>
+            <tr>
+                <th scope="row">Count Sleeping Places</th>
+                <td>@order.Offer.CountSleepingPlaces.ToString()</td>
+            </tr>
+            <tr>
+                <th scope="row">Final Price</th>
+                <td>@order.FinalPrice.ToString()</td>
+            </tr>
+            <tr>
+                <th scope="row">Arriving Date</th>
+                <td>@order.ArrivingDate.ToString()</td>
+            </tr>
+            <tr>
+                <th scope="row">Departure Date</th>
+                <td>@order.DepartureDate.ToString()</td>
+            </tr>
+
+            </tbody>
+        </table>
+        <hr>
+
+        <form method="POST" action="@Url.Action("OrdersList", "Client")">
+            <input type="hidden" value="@order.IdToDelete" name="id" class="btn-primary btn-sm"/>
+            <button type="submit">Delete</button>
+        </form>
+
+
+    </form>
+}

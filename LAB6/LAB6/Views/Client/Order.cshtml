@@ -1,0 +1,68 @@
+@model OrderModel
+
+<h1> Order </h1>
+<form asp-action="Order" asp-controller="Client" asp-anti-forgery="true" method="post">
+
+    <hr>
+    <table class="table table-hover table-dark">
+        <tbody>
+        <tr>
+            <th scope="row">Cost For Day</th>
+            <td>@Model.Offer.CostForDay.ToString()</td>
+        </tr>
+        <tr>
+            <th scope="row">Days</th>
+            <td>@Model.Offer.Days.ToString()</td>
+        </tr>
+        <tr>
+            <th scope="row">Country</th>
+            <td>@Model.Offer.Country</td>
+        </tr>
+        <tr>
+            <th scope="row">Address</th>
+            <td>@Model.Offer.Address</td>
+        </tr>
+        <tr>
+            <th scope="row">App Type</th>
+            <td>@Model.Offer.AppTypeName</td>
+        </tr>
+        <tr>
+            <th scope="row">App Class</th>
+            <td>@Model.Offer.AppClassName</td>
+        </tr>
+        <tr>
+            <th scope="row">Count Rooms</th>
+            <td>@Model.Offer.CountRooms.ToString()</td>
+        </tr>
+        <tr>
+            <th scope="row">Count Floors</th>
+            <td>@Model.Offer.CountFloors.ToString()</td>
+        </tr>
+        <tr>
+            <th scope="row">Count Sleeping Places</th>
+            <td>@Model.Offer.CountSleepingPlaces.ToString()</td>
+        </tr>
+        </tbody>
+    </table>
+    <div style="margin-top: 10px">
+        <label asp-for="@Model.ArrivingDate">Arriving Date</label><br/>
+        <input asp-for="@Model.ArrivingDate" type="date" min="2022-12-12">
+        <span asp-validation-for="@Model.ArrivingDate"></span>
+    </div>
+    <hr>
+
+    <div style="margin-top: 10px">
+        <input type="hidden" asp-for="@Model.Offer.id" readonly/>
+        <input type="hidden" asp-for="@Model.Offer.CostForDay" readonly/>
+        <input type="hidden" asp-for="@Model.Offer.Days" readonly/>
+        <input type="hidden" asp-for="@Model.Offer.Country" readonly/>
+        <input type="hidden" asp-for="@Model.Offer.Address" readonly/>
+        <input type="hidden" asp-for="@Model.Offer.AppTypeName" readonly/>
+        <input type="hidden" asp-for="@Model.Offer.AppClassName" readonly/>
+        <input type="hidden" asp-for="@Model.Offer.CountRooms" readonly/>
+        <input type="hidden" asp-for="@Model.Offer.CountFloors" readonly/>
+        <input type="hidden" asp-for="@Model.Offer.CountSleepingPlaces" readonly/>
+
+        <input type="submit" value="Order!"/>
+    </div>
+</form>
